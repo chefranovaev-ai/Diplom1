@@ -1,9 +1,6 @@
 package praktikum;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -11,23 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BurgerTest {
-
-    private Burger burger;
-
-    @Mock
-    private Bun mockBun;
-
-    @Mock
-    private Ingredient mockIngredientSauce;
-
-    @Mock
-    private Ingredient mockIngredientFilling;
-
-    @Before
-    public void setUp() {
-        burger = new Burger();
-    }
+public class BurgerTest extends BaseBurgerTest {
 
     @Test
     public void testSetBuns() {
@@ -73,7 +54,8 @@ public class BurgerTest {
     }
 
     @Test
-    public void testGetReceipt() {
+    public void testGetReceiptStrict() {
+
         Mockito.when(mockBun.getName()).thenReturn("Краторная булка");
         Mockito.when(mockBun.getPrice()).thenReturn(100.0f);
 
@@ -84,11 +66,17 @@ public class BurgerTest {
         burger.setBuns(mockBun);
         burger.addIngredient(mockIngredientSauce);
 
-        String receipt = burger.getReceipt();
+        String expectedReceipt = String.format(
+            "(==== %s ====)%n" +
+                    "= %s %s =%n" +
+                    "(==== %s ====)%n" +
+                    "%nPrice: %f%n",
+            "Краторная булка",
+            "sauce", "Чили",
+            "Краторная булка",
+            250.0f
+        );
 
-        assertTrue(receipt.contains("(==== Краторная булка ====)"));
-        assertTrue(receipt.contains("= sauce Чили ="));
-        assertTrue(receipt.contains("Price: 250"));
-
+        assertEquals("Структура чека или итоговая стоимость не совпадают", expectedReceipt, burger.getReceipt());
     }
 }
