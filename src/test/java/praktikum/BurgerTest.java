@@ -17,10 +17,16 @@ public class BurgerTest extends BaseBurgerTest {
     }
 
     @Test
-    public void testAddIngredient() {
+    public void testAddIngredientContainsElement() {
         burger.addIngredient(mockIngredientSauce);
         assertTrue("Список ингредиентов не содержит добавленный элемент", burger.ingredients.contains(mockIngredientSauce));
-        assertEquals("Размер списка ингредиентов не увеличился до 1", 1, burger.ingredients.size());
+
+    }
+
+    @Test
+    public void testAddIngredientIncreasesSize() {
+        burger.addIngredient(mockIngredientSauce);
+        assertEquals("Размер списка ингридиентов не увеличился до 1", 1, burger.ingredients.size());
     }
 
     @Test
@@ -31,13 +37,22 @@ public class BurgerTest extends BaseBurgerTest {
     }
 
     @Test
-    public void testMoveIngredient() {
-        burger.addIngredient(mockIngredientSauce);   // Индекс 0
-        burger.addIngredient(mockIngredientFilling); // Индекс 1
+    public void testMoveIngredientFirstToSecondPosition() {
+        burger.addIngredient(mockIngredientSauce);
+        burger.addIngredient(mockIngredientFilling);
 
         burger.moveIngredient(0, 1);
 
         assertEquals("На индексе 0 теперь должен находиться filling", mockIngredientFilling, burger.ingredients.get(0));
+    }
+
+    @Test
+    public void testMoveIngredientSecondToFirstPosition() {
+        burger.addIngredient(mockIngredientSauce);
+        burger.addIngredient(mockIngredientFilling);
+
+        burger.moveIngredient(0, 1);
+
         assertEquals("На индексе 1 теперь должен находиться sauce", mockIngredientSauce, burger.ingredients.get(1));
     }
 
